@@ -1,0 +1,91 @@
+﻿version: '2'
+
+services:
+   mysql-inst-1:
+     image: mysql:latest
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: admin
+       MYSQL_DATABASE: admin
+       MYSQL_USER: admin
+       MYSQL_PASSWORD: admin
+
+   memcache-inst-1:
+     image: memcached:latest
+     restart: always
+
+   nginx-proxy-node:
+     build: ./images/nginxProxyNode
+     links:
+       - web-node-admin
+       - web-node-1
+       - web-node-2
+       - web-node-3
+     ports:
+       - 8000:80
+
+   web-node-admin:
+     depends_on:
+       - mysql-inst-1
+       - memcache-inst-1
+     build: ./images/phpApacheNode
+     volumes: 
+       - ../src:/var/www/html
+     expose:
+       - "80"
+     restart: always
+     environment: 
+       PATH: $PATH:/var/www/html/vendor/bin/
+   web-node-1:
+     depends_on:
+       - mysql-inst-1
+       - memcache-inst-1
+     build: ./images/phpApacheNode
+     volumes: 
+       - ../src:/var/www/html
+     expose:
+       - "80"
+     restart: always
+     environment: 
+       PATH: $PATH:/var/www/html/vendor/bin/
+   web-node-1:
+     depends_on:
+       - mysql-inst-1
+       - memcache-inst-1
+     build: ./images/phpApacheNode
+     volumes: 
+       - ../src1:/var/www/html
+     expose:
+       - "80"
+     restart: always
+     environment: 
+       PATH: $PATH:/var/www/html/vendor/bin/
+   web-node-2:
+     depends_on:
+       - mysql-inst-1
+       - memcache-inst-1
+     build: ./images/phpApacheNode
+     volumes: 
+       - ../src2:/var/www/html
+     expose:
+       - "80"
+     restart: always
+     environment: 
+       PATH: $PATH:/var/www/html/vendor/bin/
+   web-node-3:
+     depends_on:
+       - mysql-inst-1
+       - memcache-inst-1
+     build: ./images/phpApacheNode
+     volumes: 
+       - ../src3:/var/www/html
+     expose:
+       - "80"
+     restart: always
+     environment: 
+       PATH: $PATH:/var/www/html/vendor/bin/
+
+volumes:
+    db_data:
