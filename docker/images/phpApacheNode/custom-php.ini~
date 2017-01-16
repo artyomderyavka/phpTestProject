@@ -1,2 +1,0 @@
-session.save_handler = memcached
-session.save_path = "memcache-inst-1:11211" 

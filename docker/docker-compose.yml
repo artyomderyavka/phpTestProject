@@ -16,8 +16,8 @@ services:
      image: memcached:latest
      restart: always
 
-   nginx-proxy-node:
-     build: ./images/nginxProxyNode
+   haproxy-node:
+     build: ./images/haProxyNode
      links:
        - web-node-admin
        - web-node-1
